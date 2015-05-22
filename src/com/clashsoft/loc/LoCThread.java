@@ -58,14 +58,14 @@ public class LoCThread extends Thread
 		int count = files.size();
 		LoCTool.instance.progressBar.setString("0 / " + count);
 		LoCTool.instance.progressBar.setMinimum(0);
-		LoCTool.instance.progressBar.setMaximum(count);
+		LoCTool.instance.progressBar.setMaximum(count - 1);
 		LoCTool.instance.labelFileCount.setText("Files: " + count);
 		LoCTool.instance.labelDirCount.setText("Directories: " + dirCount);
 		
 		for (int i = 0; i < count; )
 		{
 			processFile(files.get(i));
-			LoCTool.instance.progressBar.setValue(count);
+			LoCTool.instance.progressBar.setValue(i);
 			LoCTool.instance.progressBar.setString(++i + " / " + count);
 			LoCTool.instance.textFieldLOC.setText(Long.toString(loc));
 			LoCTool.instance.textFieldSLOC.setText(Long.toString(sloc));
@@ -80,7 +80,7 @@ public class LoCThread extends Thread
 			for (String s : Files.readAllLines(file.toPath()))
 			{
 				loc++;
-				if (s.indexOf("//") == 0)
+				if (s.indexOf("//") >= 0)
 				{
 					cloc++;
 				}
