@@ -3,6 +3,7 @@ package com.clashsoft.loc;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,7 @@ public class LoCThread extends Thread
 		LoCTool.instance.labelFileCount.setText("Files: " + count);
 		LoCTool.instance.labelDirCount.setText("Directories: " + dirCount);
 		
-		for (int i = 0; i < count; )
+		for (int i = 0; i < count;)
 		{
 			processFile(files.get(i));
 			LoCTool.instance.progressBar.setValue(i);
@@ -77,21 +78,66 @@ public class LoCThread extends Thread
 	{
 		try
 		{
-			for (String s : Files.readAllLines(file.toPath()))
-			{
-				loc++;
-				if (s.indexOf("//") >= 0)
-				{
-					cloc++;
-				}
-				else
-				{
-					sloc++;
-				}
-			}
+			processCode(new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8));
 		}
 		catch (IOException ex)
 		{
 		}
+	}
+	
+	private static void processCode(String code)
+	{
+		int length = code.length();
+		int loc = 1;
+		int cloc = 0;
+		int sloc = 1;
+		byte comment = 0; // 0 - none, 1 - line, 2 - multiline
+		
+		for (int i = 0; i < length; i++)
+		{
+			char c = code.charAt(i);
+			switch (c)
+			{
+			case '\n':
+				loc++;
+				switch (comment)
+				{
+				case 0:
+					sloc++;
+					break;
+				case 1:
+					comment = 0;
+				case 2:
+					cloc++;
+				}
+				break;
+			case '/':
+				switch (comment)
+				{
+				case 0:
+					switch (code.charAt(i + 1))
+					{
+					case '/':
+						comment = 1;
+						i++;
+						continue;
+					case '*':
+						comment = 2;
+						i++;
+						continue;
+					}
+					break;
+				case 2:
+					if (code.charAt(i - 1) == '*')
+					{
+						comment = 0;
+					}
+				}
+			}
+		}
+		
+		LoCThread.sloc += sloc;
+		LoCThread.cloc += cloc;
+		LoCThread.loc += loc;
 	}
 }
