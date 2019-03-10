@@ -1,5 +1,9 @@
-/bin/
+/.idea/
+/.gradle/
 
-.classpath
+/build/
+/out/
+/temp/
+/data/
 
-.project
+hs_err_pid*
