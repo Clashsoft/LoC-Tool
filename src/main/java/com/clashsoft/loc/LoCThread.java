@@ -10,17 +10,17 @@ import java.util.List;
 
 public class LoCThread extends Thread
 {
-	protected static List<File>	files	= new ArrayList();
-	protected static int		dirCount;
-	protected static long		loc;
-	protected static long		sloc;
-	protected static long		cloc;
-	
+	protected static List<File> files = new ArrayList();
+	protected static int        dirCount;
+	protected static long       loc;
+	protected static long       sloc;
+	protected static long       cloc;
+
 	public static void startThread(ActionEvent e)
 	{
 		new LoCThread().start();
 	}
-	
+
 	@Override
 	public void run()
 	{
@@ -32,7 +32,7 @@ public class LoCThread extends Thread
 		walkFileTree(new File(LoCTool.instance.textFieldProjectRoot.getText()));
 		processFiles();
 	}
-	
+
 	public static void walkFileTree(File file)
 	{
 		if (file.isDirectory())
@@ -42,7 +42,7 @@ public class LoCThread extends Thread
 			{
 				return;
 			}
-			
+
 			dirCount++;
 			for (String s : file.list())
 			{
@@ -50,10 +50,10 @@ public class LoCThread extends Thread
 			}
 			return;
 		}
-		
+
 		files.add(file);
 	}
-	
+
 	public static void processFiles()
 	{
 		int count = files.size();
@@ -62,8 +62,8 @@ public class LoCThread extends Thread
 		LoCTool.instance.progressBar.setMaximum(count - 1);
 		LoCTool.instance.labelFileCount.setText("Files: " + count);
 		LoCTool.instance.labelDirCount.setText("Directories: " + dirCount);
-		
-		for (int i = 0; i < count;)
+
+		for (int i = 0; i < count; )
 		{
 			processFile(files.get(i));
 			LoCTool.instance.progressBar.setValue(i);
@@ -73,7 +73,7 @@ public class LoCThread extends Thread
 			LoCTool.instance.textFieldCLOC.setText(Long.toString(cloc));
 		}
 	}
-	
+
 	public static void processFile(File file)
 	{
 		try
@@ -84,7 +84,7 @@ public class LoCThread extends Thread
 		{
 		}
 	}
-	
+
 	private static void processCode(String code)
 	{
 		int length = code.length();
@@ -92,7 +92,7 @@ public class LoCThread extends Thread
 		int cloc = 0;
 		int sloc = 1;
 		byte comment = 0; // 0 - none, 1 - line, 2 - multiline
-		
+
 		for (int i = 0; i < length; i++)
 		{
 			char c = code.charAt(i);
@@ -135,7 +135,7 @@ public class LoCThread extends Thread
 				}
 			}
 		}
-		
+
 		LoCThread.sloc += sloc;
 		LoCThread.cloc += cloc;
 		LoCThread.loc += loc;

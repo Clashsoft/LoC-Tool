@@ -6,25 +6,25 @@ import java.io.File;
 
 public class LoCTool
 {
-	public static LoCTool		instance;
+	public static LoCTool instance;
 
-	private JFrame				frame;
-	public JButton				buttonSelectFile;
-	public JLabel				labelProjectFolder;
-	public JTextField			textFieldProjectRoot;
+	private JFrame     frame;
+	public  JButton    buttonSelectFile;
+	public  JLabel     labelProjectFolder;
+	public  JTextField textFieldProjectRoot;
 
-	private final JFileChooser	fileChooser	= new JFileChooser();
+	private final JFileChooser fileChooser = new JFileChooser();
 
-	public JButton				buttonScan;
-	public JLabel				labelLOC;
-	public JLabel				labelSLOC;
-	public JLabel				labelCLOC;
-	public JTextField			textFieldLOC;
-	public JTextField			textFieldSLOC;
-	public JTextField			textFieldCLOC;
-	public JProgressBar			progressBar;
-	public JLabel				labelFileCount;
-	public JLabel				labelDirCount;
+	public JButton      buttonScan;
+	public JLabel       labelLOC;
+	public JLabel       labelSLOC;
+	public JLabel       labelCLOC;
+	public JTextField   textFieldLOC;
+	public JTextField   textFieldSLOC;
+	public JTextField   textFieldCLOC;
+	public JProgressBar progressBar;
+	public JLabel       labelFileCount;
+	public JLabel       labelDirCount;
 
 	public static void main(String[] args)
 	{
